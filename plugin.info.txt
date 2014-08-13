@@ -1,0 +1,7 @@
+base   beamer
+author Andreas Gohr
+email  andi@splitbrain.org
+date   2014-08-07
+name   beamer plugin
+desc   Export a page to a LaTex Beamer presentation
+url    http://www.dokuwiki.org/plugin:beamer
