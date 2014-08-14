@@ -5,7 +5,7 @@
  * @author Andreas Gohr <andi@splitbrain.org>
  */
 
-$conf['hllevel']         = 2;
-$conf['beamer_template'] = 'Boadilla';
-$conf['beamer_color']    = 'default';
-$conf['beamer_font']     = 'default';
+$conf['hllevel']      = 2;
+$conf['beamer_theme'] = 'Boadilla';
+$conf['beamer_color'] = 'default';
+$conf['beamer_font']  = 'default';

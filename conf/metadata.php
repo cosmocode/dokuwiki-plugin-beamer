@@ -7,7 +7,7 @@
 
 $meta['hllevel'] = array('numeric');
 
-$conf['beamer_template'] = array(
+$conf['beamer_theme'] = array(
     'multichoice',
     '_choices' => array(
         'AnnArbor',
