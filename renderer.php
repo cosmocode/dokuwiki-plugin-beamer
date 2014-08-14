@@ -18,6 +18,9 @@ class renderer_plugin_beamer extends renderer_plugin_latexit {
     function document_start() {
         parent::document_start();
 
+        // disable caching
+        $this->info['cache'] = false;
+
         $this->store->addPreamble(array('usetheme', $this->getConf('beamer_theme')));
         $this->store->addPreamble(array('usecolortheme', $this->getConf('beamer_color')));
         $this->store->addPreamble(array('usefonttheme', $this->getConf('beamer_font')));
