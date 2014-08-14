@@ -13,8 +13,21 @@ require_once DOKU_PLUGIN.'latexit/renderer.php';
 
 class renderer_plugin_beamer extends renderer_plugin_latexit {
 
+    /**
+     * @var bool track if a slide is currently open
+     */
     protected $inslide = false;
 
+    /**
+     * @var bool track if we're in the note part of a slide currently
+     */
+    protected $innote = false;
+
+    /**
+     * Handle the start of a document
+     *
+     * just adds beamer stuff to the preamble and disables caching
+     */
     function document_start() {
         parent::document_start();
 
@@ -24,6 +37,11 @@ class renderer_plugin_beamer extends renderer_plugin_latexit {
         $this->store->addPreamble(array('usetheme', $this->getConf('beamer_theme')));
         $this->store->addPreamble(array('usecolortheme', $this->getConf('beamer_color')));
         $this->store->addPreamble(array('usefonttheme', $this->getConf('beamer_font')));
+
+        $this->store->addPreamble('% comment this in to show notes:');
+        $this->store->addPreamble('%\setbeameroption{show notes}');
+        $this->store->addPreamble('\setbeamertemplate{note page}[plain]');
+
     }
 
     /**
@@ -35,8 +53,17 @@ class renderer_plugin_beamer extends renderer_plugin_latexit {
      */
     function header($text, $level, $pos) {
         // close previous slide
-        if($this->inslide && $level >= $this->getConf('hllevel')) {
-            $this->doc .= DOKU_LF.'\end{frame}'.DOKU_LF;
+        if($this->inslide && $level <= $this->getConf('hllevel')) {
+            // close note first
+            if($this->innote) {
+                $this->_n();
+                $this->_close();
+                $this->_n();
+                $this->innote = false;
+            }
+
+            $this->_n();
+            $this->_c('end', 'frame', 2);
             $this->inslide = false;
         }
 
@@ -49,7 +76,6 @@ class renderer_plugin_beamer extends renderer_plugin_latexit {
             $this->inslide = true;
         }
 
-
     }
 
     /**
@@ -57,7 +83,16 @@ class renderer_plugin_beamer extends renderer_plugin_latexit {
      */
     function document_end() {
         if($this->inslide) {
-            $this->doc .= DOKU_LF.'\end{frame}'.DOKU_LF;
+            // close note first
+            if($this->innote) {
+                $this->_n();
+                $this->_close();
+                $this->_n();
+                $this->innote = false;
+            }
+
+            $this->_n();
+            $this->_c('end', 'frame');
             $this->inslide = false;
         }
 
@@ -66,6 +101,17 @@ class renderer_plugin_beamer extends renderer_plugin_latexit {
         $hlp->removePackage('hyperref'); // hyperref is is autoloaded by the beamer class
 
         parent::document_end();
+    }
+
+    /**
+     * Lines start notes section
+     */
+    function hr() {
+        if($this->innote) return; // we're in note section already
+        $this->_n();
+        $this->_open('note');
+        $this->_n();
+        $this->innote = true;
     }
 
     /**
