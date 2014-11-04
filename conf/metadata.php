@@ -7,7 +7,7 @@
 
 $meta['hllevel'] = array('numeric');
 
-$conf['beamer_theme'] = array(
+$meta['beamer_theme'] = array(
     'multichoice',
     '_choices' => array(
         'AnnArbor',
@@ -41,7 +41,7 @@ $conf['beamer_theme'] = array(
     )
 );
 
-$conf['beamer_color'] = array(
+$meta['beamer_color'] = array(
     'multichoice',
     '_choices' => array(
         'albatross',
@@ -64,7 +64,7 @@ $conf['beamer_color'] = array(
     )
 );
 
-$conf['beamer_font'] = array(
+$meta['beamer_font'] = array(
     'multichoice',
     '_choices' => array(
         'default',
